@@ -1,0 +1,112 @@
+let initalData =  {!! json_encode($data) !!}
+console.log(initalData)
+let title = initalData.title
+console.log(title)
+let description = initalData.description
+let startTime = initalData.eventCalendarTimeStart
+let endTime = initalData.eventCalendarTimeEnd
+// let timezone = initalData.timezone
+// let timezonesData = timezones
+
+function convertToLocalTime ($offerTime){
+    let utcTime = moment($offerTime).utcOffset(0).format();
+    // console.log(utcTime)
+    let localTime = moment.utc(utcTime).local().format('lll') 
+    console.log(localTime)
+    return localTime
+  }
+
+  let localStartTime = this.convertToLocalTime(startTime)
+  let localEndTime = this.convertToLocalTime(endTime)
+
+
+  let googleURL = "https://calendar.google.com/calendar/u/0/r/eventedit?"
+  this.addToGoogleCalendar()
+  let outlookURL = "https://outlook.live.com/calendar/0/deeplink/compose?"
+  this.addToOutlookCalendar()
+  let yahooURL = "https://calendar.yahoo.com/?"
+  this.addToYahooCalendar()
+
+
+function zeroFill($number){
+    if($number>=0 && $number<=9){
+        $number = "0"+$number
+        return $number
+    }else{
+        return $number
+    }
+}
+
+
+//format date to google calendar request
+function formatGoogleYahooCalendarDate($time){
+    let date = new Date($time);
+    let year = date.getFullYear()
+    let month = zeroFill(date.getMonth()+1)
+    let day = zeroFill(date.getDate())
+    let hour = zeroFill(date.getHours())
+    let minite = zeroFill(date.getMinutes())
+    let second = zeroFill(date.getSeconds())
+    let finalDate = `${year}${month}${day}T${hour}${minite}${second}`
+    console.log(finalDate)
+    //format:yyyymmddThhmmss
+    return finalDate 
+}
+
+
+
+//menthod to add to google calendar
+function addToGoogleCalendar(){
+    let googleApi = `${googleURL}text=${title}&dates=${ formatGoogleYahooCalendarDate(localStartTime)}/${ formatGoogleYahooCalendarDate(localEndTime)}&details=${description}`
+    let googleObj =  document.getElementById("googleCalendar")
+    googleObj.href = googleApi
+    console.log(googleObj.href)
+}
+
+//format date to outlook calendar request
+function formatOutlookCalendarDate($time){
+    //convert to local time
+    let date = new Date($time)
+    let year = date.getFullYear()
+    let month = zeroFill(date.getMonth()+1)
+    let day = zeroFill(date.getDate())
+    let hour = zeroFill(date.getHours())
+    let minite = zeroFill(date.getMinutes())
+    let second = zeroFill(date.getSeconds())
+    // negate and convert the difference between UTC and Local Time from minites to hours 
+    // let timezone = -(date.getTimezoneOffset()/60) 
+    // let finalDate =timezone>0? `${year}-${month}-${day}T${hour}:${minite}:${second}+${timezone}:00`:`${year}-${month}-${day}T${hour}:${minite}:${second}${timezone}:00`
+    
+    let finalDate = `${year}-${month}-${day}T${hour}:${minite}:${second}:00`
+    console.log(finalDate)
+    //format:/yyyymmddThhmmss+-00:00
+    return finalDate 
+}
+//menthod to add to outlook calendar
+function addToOutlookCalendar(){
+    let outlookApi = `${outlookURL}&path=/calendar/action/compose&rru=addevent&startdt=${formatOutlookCalendarDate(localStartTime)}&enddt=${formatOutlookCalendarDate(localEndTime)}&subject=${title}&body=${description}`
+    let outlookObj =  document.getElementById("outlookCalendar")
+    outlookObj.href = outlookApi
+    console.log(outlookObj.href)
+}
+
+//format date to yahoo! calendar request
+// function formatYahooCalendarDate($time){  
+//     let date = new Date($time)
+//     let year = date.getFullYear()
+//     let month = zeroFill(date.getMonth()+1)
+//     let day = zeroFill(date.getDate())
+//     let hour = zeroFill(date.getHours())
+//     let minite = zeroFill(date.getMinutes())
+//     let second = zeroFill(date.getSeconds())
+//     let finalDate = `${year}${month}${day}T${hour}${minite}${second}0Z`
+//     //format:yyyymmddThhmmsssZ
+//     return finalDate
+// }
+//menthod to add to yahoo calendar
+function addToYahooCalendar(){
+    let yahooApi = `${yahooURL}&v=60&ST=${ formatGoogleYahooCalendarDate(startTime)}&ET=${ formatGoogleYahooCalendarDate(endTime)}&TITLE=${title}&DESC=${description}`
+    let yahooObj =  document.getElementById("yahooCalendar")
+    yahooObj.href = yahooApi
+    console.log(yahooObj.href)
+}

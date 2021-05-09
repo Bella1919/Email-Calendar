@@ -1,0 +1,190 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <br><br>
+        <a id="googleCalendar" href="#">Google Calendar(online)</a>
+        <br><br>
+        <a id="outlookCalendar" href="#">Outlook Calendar(online)</a>
+        <br><br>
+        <a id="yahooCalendar" href="#">Yahoo! Calendar(online)</a>
+        <br><br>
+        <a id="aolCalendar" href="#">AOL Calendar</a>
+        <br><br>
+        <a id="appleCalendar" href="#">Apple Calendar</a>
+      </div>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script>
+   
+
+      let title = 'Meeting'
+      let description ='Example Meeting'
+      let startTime = '2021-05-24T19:30:00+02:00'
+      let endTime = '2021-05-24T20:00:00+02:00'
+      let timezone = 'Europe/Paris'
+
+      let googleURL = "https://calendar.google.com/calendar/u/0/r/eventedit?"
+      let outlookURL = "https://outlook.live.com/calendar/0/deeplink/compose?"
+      let yahooURL = "https://calendar.yahoo.com/?"
+      
+      cutTime =  function sliceTime($time){
+          let sliceTimeResult = $time.slice(0,19)
+          return sliceTimeResult
+        }
+
+      let googleStartTime = cutTime(startTime)
+      let googleEndTime = cutTime(endTime)
+      
+      //menthod for format time
+      format = function date2str(x, y) {
+            var z = {
+                M: x.getMonth() + 1,
+                d: x.getDate(),
+                h: x.getHours(),
+                m: x.getMinutes(),
+                s: x.getSeconds()
+            };
+            y = y.replace(/(M+|d+|h+|m+|s+)/g, function(v) {
+                return ((v.length > 1 ? "0" : "") + z[v.slice(-1)]).slice(-2)
+            });
+
+            return y.replace(/(y+)/g, function(v) {
+                return x.getFullYear().toString().slice(-v.length)
+            });
+        }
+
+        //format google time
+        let googleFinalStartTime = format(new Date(googleStartTime), 'yyyyMMddThhmmss')
+        let googleEndStartTime = format(new Date(googleEndTime), 'yyyyMMddThhmmss')
+    
+        //menthod to add to google calendar
+        this.addToGoogleCalendar()
+        function addToGoogleCalendar(){
+            let googleApi = `${googleURL}text=${title}&dates=${googleFinalStartTime}/${googleEndStartTime}&ctz=${timezone}&details=${description}`
+            let googleObj =  document.getElementById("googleCalendar")
+            googleObj.href = googleApi
+            console.log(googleObj.href)
+        }
+        
+        //menthod to add to outlook calendar
+        this.addToOutlookCalendar()
+        function addToOutlookCalendar(){
+        let outlookApi = `${outlookURL}&path=/calendar/action/compose&rru=addevent&startdt=${startTime}&enddt=${endTime}&subject=${title}&body=${description}`
+        let outlookObj =  document.getElementById("outlookCalendar")
+        outlookObj.href = outlookApi
+        console.log(outlookObj.href)
+        }
+
+        //format yahoo time
+        let yahooFinalStartTime = format(new Date(startTime), 'yyyyMMddThhmmss')
+        let yahooEndStartTime = format(new Date(endTime), 'yyyyMMddThhmmss')
+
+        //menthod to add to yahoo calendar
+        this.addToYahooCalendar()
+        function addToYahooCalendar(){
+        let yahooApi = `${yahooURL}&v=60&ST=${yahooFinalStartTime}&ET=${yahooEndStartTime}&TITLE=${title}&DESC=${description}`
+        let yahooObj =  document.getElementById("yahooCalendar")
+        yahooObj.href = yahooApi
+        console.log(yahooObj.href)
+    }
+
+
+        
+        
+    
+     
+
+
+
+
+
+
+  
+     
+    //   function zeroFill($number){
+    //     if($number>=0 && $number<=9){
+    //         $number = "0"+$number
+    //         return $number
+    //     }else{
+    //         return $number
+    //     }
+    //   }
+
+        //convert local start date 
+        // let startDate = new Date(startTime);
+        // console.log(startDate)
+        // let startYear = startTime.getFullYear()
+        // console.log(startYear)
+        // let startMonth = zeroFill(startDate.getMonth()+1)
+        // let startDay = zeroFill(startDate.getDate())
+        // let startHour = zeroFill(startDate.getHours())
+        // let startMinite = zeroFill(startDate.getMinutes())
+        // let startSecond = zeroFill(startDate.getSeconds())
+          //convert local end date 
+        // let endDate = new Date(endTime);
+        // let endYear = endDate.getFullYear()
+        // let endMonth = zeroFill(endDate.getMonth()+1)
+        // let endDay = zeroFill(endDate.getDate())
+        // let endHour = zeroFill(endDate.getHours())
+        // let endMinite = zeroFill(endDate.getMinutes())
+        // let endSecond = zeroFill(endDate.getSeconds())
+
+        //format:yyyymmddThhmmss
+        // let googleFinalStartDate = `${startYear}${startMonth}${startDay}T${startHour}${startMinite}${startSecond}`
+        // console.log(googleFinalStartDate )
+        // let googleFinalEndDate = `${endYear}${endMonth}${endDay}T${endHour}${endMinite}${endSecond}`
+        // console.log(googleFinalEndDate )
+
+        
+       
+        
+        //format:/yyyymmddThhmmss+-00:00
+    //     let outlookFinalStartDate = `${startYear}-${startMonth}-${startDay}T${startHour}:${startMinite}:${startSecond}:00`
+    //     console.log(outlookFinalStartDate)
+    //     let outlookFinalEndDate = `${endYear}-${endMonth}-${endDay}T${endHour}:${endMinite}:${endSecond}:00`
+    //     console.log(outlookFinalEndDate)
+
+    //     let outlookURL = "https://outlook.live.com/calendar/0/deeplink/compose?"
+    //     this.addToOutlookCalendar()
+
+    //     //menthod to add to outlook calendar
+    //     function addToOutlookCalendar(){
+    //     let outlookApi = `${outlookURL}&path=/calendar/action/compose&rru=addevent&startdt=${outlookFinalStartDate}&enddt=${outlookFinalEndDate}&subject=${title}&body=${description}`
+    //     let outlookObj =  document.getElementById("outlookCalendar")
+    //     outlookObj.href = outlookApi
+    //     console.log(outlookObj.href)
+    //   }
+    //     //format:yyyymmddThhmmssZ
+    //     let yahooFinalStartDate = `${startYear}${startMonth}${startDay}T${startHour}${startMinite}${startSecond}Z`
+    //     console.log(outlookFinalStartDate )
+    //     let yahooFinalEndDate = `${endYear}${endMonth}${endDay}T${endHour}${endMinite}${endSecond}Z`
+    //     console.log(outlookFinalEndDate )
+
+    //     let yahooURL = "https://calendar.yahoo.com/?"
+    //     this.addToYahooCalendar()
+
+    //     //menthod to add to yahoo calendar
+    //     function addToYahooCalendar(){
+    //         let yahooApi = `${yahooURL}&v=60&ST=${yahooFinalStartDate}&ET=${yahooFinalEndDate}&TITLE=${title}&DESC=${description}`
+    //         let yahooObj =  document.getElementById("yahooCalendar")
+    //         yahooObj.href = yahooApi
+    //         console.log(yahooObj.href)
+    //     }
+
+        
+
+
+
+
+
+
+
+    </script>
+    
+</body>
+</html>

@@ -64,9 +64,125 @@
           Bella
         </p>
     </div> 
+
+
+    <div>
+      <br><br>
+      <a id="googleCalendar" href="#">Google Calendar(online)</a>
+      <br><br>
+      <a id="outlookCalendar" href="#">Outlook Calendar(online)</a>
+      <br><br>
+      <a id="yahooCalendar" href="#">Yahoo! Calendar(online)</a>
+      <br><br>
+      <a id="aolCalendar" href="#">AOL Calendar</a>
+      <br><br>
+      <a id="appleCalendar" href="#">Apple Calendar</a>
+    </div>
+
   
     <script src="/googleCalendar.js"></script>
     <script src="/outlookCalendar.js"></script>
     <script src="/yahooCalendar.js"></script>
+
+    <script>
+   
+
+      let title = 'Meeting'
+      let description ='Example Meeting'
+      let startTime = '2021-05-24T19:30:00+02:00'
+      let endTime = '2021-05-24T20:00:00+02:00'
+
+
+      // function convertToLocalTime (offerTime){
+      //   let utcTime = moment(offerTime).utcOffset(0).format();
+      //   // console.log(utcTime)
+      //   let localTime = moment.utc(utcTime).local().format('lll') 
+      //   // console.log(localTime)
+
+      //   return localTime
+      // }
+
+      // let localStartTime = this.convertToLocalTime(startTime)
+      // console.log(localStartTime)
+      // let localEndTime = this.convertToLocalTime(endTime)
+
+     
+      function zeroFill($number){
+        if($number>=0 && $number<=9){
+            $number = "0"+$number
+            return $number
+        }else{
+            return $number
+        }
+      }
+
+        //convert local start date 
+        let startDate = new Date(startTime);
+        console.log(startDate)
+        let startYear = startDate.getFullYear()
+        let startMonth = zeroFill(startDate.getMonth()+1)
+        let startDay = zeroFill(startDate.getDate())
+        let startHour = zeroFill(startDate.getHours())
+        let startMinite = zeroFill(startDate.getMinutes())
+        let startSecond = zeroFill(startDate.getSeconds())
+          //convert local end date 
+        let endDate = new Date(endTime);
+        let endYear = endDate.getFullYear()
+        let endMonth = zeroFill(endDate.getMonth()+1)
+        let endDay = zeroFill(endDate.getDate())
+        let endHour = zeroFill(endDate.getHours())
+        let endMinite = zeroFill(endDate.getMinutes())
+        let endSecond = zeroFill(endDate.getSeconds())
+
+        //format:yyyymmddThhmmss
+        let googleFinalStartDate = `${startYear}${startMonth}${startDay}T${startHour}${startMinite}${startSecond}`
+        console.log(googleFinalStartDate )
+        let googleFinalEndDate = `${endYear}${endMonth}${endDay}T${endHour}${endMinite}${endSecond}`
+        console.log(googleFinalEndDate )
+
+        let googleURL = "https://calendar.google.com/calendar/u/0/r/eventedit?"
+        this.addToGoogleCalendar()
+       
+        //menthod to add to google calendar
+        function addToGoogleCalendar(){
+            let googleApi = `${googleURL}text=${title}&dates=${googleFinalStartDate}/${googleFinalEndDate}&details=${description}`
+            let googleObj =  document.getElementById("googleCalendar")
+            googleObj.href = googleApi
+            console.log(googleObj.href)
+        }
+        //format:/yyyymmddThhmmss+-00:00
+        let outlookFinalStartDate = `${startYear}-${startMonth}-${startDay}T${startHour}:${startMinite}:${startSecond}:00`
+        console.log(outlookFinalStartDate)
+        let outlookFinalEndDate = `${endYear}-${endMonth}-${endDay}T${endHour}:${endMinite}:${endSecond}:00`
+        console.log(outlookFinalEndDate)
+
+        let outlookURL = "https://outlook.live.com/calendar/0/deeplink/compose?"
+        this.addToOutlookCalendar()
+
+        //menthod to add to outlook calendar
+        function addToOutlookCalendar(){
+        let outlookApi = `${outlookURL}&path=/calendar/action/compose&rru=addevent&startdt=${outlookFinalStartDate}&enddt=${outlookFinalEndDate}&subject=${title}&body=${description}`
+        let outlookObj =  document.getElementById("outlookCalendar")
+        outlookObj.href = outlookApi
+        console.log(outlookObj.href)
+      }
+        //format:yyyymmddThhmmssZ
+        let yahooFinalStartDate = `${startYear}${startMonth}${startDay}T${startHour}${startMinite}${startSecond}Z`
+        console.log(outlookFinalStartDate )
+        let yahooFinalEndDate = `${endYear}${endMonth}${endDay}T${endHour}${endMinite}${endSecond}Z`
+        console.log(outlookFinalEndDate )
+
+        let yahooURL = "https://calendar.yahoo.com/?"
+        this.addToYahooCalendar()
+
+        //menthod to add to yahoo calendar
+        function addToYahooCalendar(){
+            let yahooApi = `${yahooURL}&v=60&ST=${yahooFinalStartDate}&ET=${yahooFinalEndDate}&TITLE=${title}&DESC=${description}`
+            let yahooObj =  document.getElementById("yahooCalendar")
+            yahooObj.href = yahooApi
+            console.log(yahooObj.href)
+        }
+
+    </script>
 </body>
 </html>
