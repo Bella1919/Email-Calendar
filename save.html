@@ -51,6 +51,7 @@ function formatGoogleYahooCalendarDate($time){
     console.log(finalDate)
     //format:yyyymmddThhmmss
     return finalDate 
+    
 }
 
 
@@ -88,6 +89,7 @@ function addToOutlookCalendar(){
     let outlookObj =  document.getElementById("outlookCalendar")
     outlookObj.href = outlookApi
     console.log(outlookObj.href)
+
 }
 
 //format date to yahoo! calendar request
@@ -109,4 +111,5 @@ function addToYahooCalendar(){
     let yahooObj =  document.getElementById("yahooCalendar")
     yahooObj.href = yahooApi
     console.log(yahooObj.href)
+
 }
